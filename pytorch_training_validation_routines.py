@@ -32,7 +32,7 @@ def train_validation(n_epochs, loaders, model, optimizer, criterion, use_cuda, s
             optimizer.step()
             # sum all the correct predictions to find the training accuracy
             _, predicted_labels = output.max(1)
-            train_correct += (predicted_labels == target).float().sum()
+            train_correct += (predicted_labels == target).float().sum().cpu().numpy()
             # update running training loss
             train_loss += ((1 / (batch_idx + 1)) * (loss.data.item() - train_loss))
             # print updates every 5 batches
@@ -51,7 +51,7 @@ def train_validation(n_epochs, loaders, model, optimizer, criterion, use_cuda, s
             loss = criterion(output, target)
             # sum all the correct predictions to find the validation accuracy
             _, predicted_labels = output.max(1)
-            valid_correct = (predicted_labels == target).float().sum()
+            valid_correct = (predicted_labels == target).float().sum().cpu().numpy()
             # update running validation loss 
             valid_loss += (loss.data.item() - valid_loss) / (batch_idx + 1)
 
