@@ -31,12 +31,14 @@ class Net(nn.Module):
         self.num_cnn_output = functools.reduce(operator.mul, list(self.features(torch.rand(1, *input_dim)).shape))
 
         classification_layers.append(nn.Linear(self.num_cnn_output, linears[0]))
+        classification_layers.append(nn.ReLU())
 
         if dropouts[0] != 0:
               classification_layers.append(nn.Dropout(p=dropouts[0]))
 
         for index in range(1, len(linears)):
             classification_layers.append(nn.Linear(linears[index-1], linears[index]))
+            classification_layers.append(nn.ReLU())
             if dropouts[index] != 0:
               classification_layers.append(nn.Dropout(p=dropouts[index]))
 
@@ -54,18 +56,18 @@ class Net(nn.Module):
 
 num_classes = 50
 
-channels = [3, 5]
-conv_kernels = [2]
-conv_strides = [1]
-conv_paddings = [0]
+channels = [3,64,192,384,256,256]
+conv_kernels = [11,5,3,3,3]
+conv_strides = [4,1,1,1,1]
+conv_paddings = [2,2,1,1,1]
 
-pooling_kerenls = [0]
-pooling_strides = [1]
-pooling_paddings = [0]
+pooling_kerenls = [3,3,0,0,3]
+pooling_strides = [2,2,0,0,2]
+pooling_paddings = [0,0,0,0,0]
 
-linears = [20000, 10000]
+linears = [4096,4096,1000]
 
-dropouts = [0.5, 0.9]
+dropouts = [0.5, 0, 0]
 
 input_dim = images[0].shape
 
