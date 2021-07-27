@@ -15,6 +15,9 @@ def train_validation(n_epochs, loaders, model, optimizer, criterion, use_cuda, s
         valid_correct = 0
 
         model.train()
+        if use_cuda:
+            model.cuda()
+            
         for batch_idx, (data, target) in enumerate(loaders['train']):
             # move to GPU
             if use_cuda:
