@@ -54,17 +54,17 @@ def train_validation(n_epochs, loaders, model, optimizer, criterion, use_cuda, s
             loss = criterion(output, target)
             # sum all the correct predictions to find the validation accuracy
             _, predicted_labels = output.max(1)
-            valid_correct = (predicted_labels == target).float().sum().cpu().numpy()
+            valid_correct += (predicted_labels == target).float().sum().cpu().numpy()
             # update running validation loss 
             valid_loss += (loss.data.item() - valid_loss) / (batch_idx + 1)
 
         # print training/validation statistics
         print('Epoch: {} \tTraining Loss: {:.6f} \tTraining Accuracy: {:.6f}% \tValidation Loss: {:.6f} \tValidation Accuracy {:.6f}%'.format(
             epoch,
-            train_loss/len(loaders["train"]),
-            train_correct/len(loaders["train"])*100,
-            valid_loss/len(loaders["valid"]),
-            valid_correct/len(loaders["valid"])*100
+            train_loss,
+            (train_correct/len(loaders["train"]))*100,
+            valid_loss,
+            (valid_correct/len(loaders["valid"]))*100
             ))
 
         # save model if validation loss has decreased
