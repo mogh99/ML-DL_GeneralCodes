@@ -6,7 +6,9 @@ def test(loaders, model, criterion, use_cuda):
 
     # set the module to evaluation mode
     model.eval()
-
+    if use_cuda:
+        model.cuda()
+        
     for batch_idx, (data, target) in enumerate(loaders['test']):
         # move to GPU
         if use_cuda:
