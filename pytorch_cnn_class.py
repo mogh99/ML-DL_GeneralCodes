@@ -31,7 +31,8 @@ class Net(nn.Module):
         self.num_cnn_output = functools.reduce(operator.mul, list(self.features(torch.rand(1, *input_dim)).shape))
 
         classification_layers.append(nn.Linear(self.num_cnn_output, linears[0]))
-        classification_layers.append(nn.ReLU())
+        if len(linears) > 1:
+              classification_layers.append(nn.ReLU())
 
         if dropouts[0] != 0:
               classification_layers.append(nn.Dropout(p=dropouts[0]))
